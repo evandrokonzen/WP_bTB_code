@@ -1,0 +1,106 @@
+
+## With R 3.1.0 or later, you can uncomment the following line to tell R to 
+## enable compilation with C++11 (where available)
+##
+## Also, OpenMP support in Armadillo prefers C++11 support. However, for wider
+## availability of the package we do not yet enforce this here.  It is however
+## recommended for client packages to set it.
+##
+## And with R 3.4.0, and RcppArmadillo 0.7.960.*, we turn C++11 on as OpenMP
+## support within Armadillo prefers / requires it
+CXX_STD = CXX11
+
+PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS) 
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+
+$(SHLIB): $(OBJECTS)
+
+MY_CPPFLAGS=-g0 -O3
+
+CheckSensSpec_.o: CheckSensSpec_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+Dlogpt_.o: Dlogpt_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+DlogSt.o: DlogSt.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+ErlangDist.o: ErlangDist.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+	
+grad_.o: grad_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+gradThetasRhos.o: gradThetasRhos.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+HMC_.o: HMC_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+HMC_thetas_rhos.o: HMC_thetas_rhos.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+	
+iFFBS_.o: iFFBS_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+iFFBStransProbRest_.o: iFFBStransProbRest_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+ivecMinus1.o: ivecMinus1.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+	
+LocateIndiv.o: LocateIndiv.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+logit.o: logit.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+logPost_.o: logPost_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+logPostThetasRhos.o: logPostThetasRhos.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+logPostXi.o: logPostXi.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+MakeSeasonVec_.o: MakeSeasonVec_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+MCMCiFFBS_.o: MCMCiFFBS_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+multrnorm.o: multrnorm.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+normTransProbRest.o: normTransProbRest.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+ObsProcess_.o: ObsProcess_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+RcppExports.o: RcppExports.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+RWMH_.o: RWMH_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+RWMH_thetas_rhos.o: RWMH_thetas_rhos.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+RWMH_xi.o: RWMH_xi.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+TestMatAsField.o: TestMatAsField.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+TestTimesField.o: TestTimesField.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+TrProbDeath_.o: TrProbDeath_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
+TrProbSurvive_.o: TrProbSurvive_.cpp
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) $(MY_CPPFLAGS) -c $< -o $@
+
