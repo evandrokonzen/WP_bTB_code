@@ -1,9 +1,6 @@
 
 
-
-
-
-# library("BIID")
+library("BIID") # package in folder BIID/
 library("Rcpp")
 library("coda")
 library("tidyverse")
@@ -16,6 +13,8 @@ library("MCMCpack")
 
 
 # setwd(getwd())
+
+seed <- 1
 
 modelFileName <- paste0("finalModel_paper1_seed", seed, "/")
 
@@ -47,7 +46,7 @@ xi_mean <- 81
 xi_sd <- 60
 sd_xi_min <- 8
 k <- 1
-seed <- 1
+
 
 set.seed(seed)
 
@@ -447,38 +446,36 @@ FIT_MODEL <- F
 
 if(FIT_MODEL){
   
-  library("BIID")
-
-  out_ <- MCMCiFFBS_(N=N, 
-                     initParamValues = initParamValues, 
-                     Xinit=Xinit, 
-                     TestMat=TestMat_,
-                     CaptHist=CaptHist, 
-                     birthTimes=birthTimes,
-                     startSamplingPeriod=startSamplingPeriod,
-                     endSamplingPeriod=endSamplingPeriod,
-                     nuTimes=nuTimes,
-                     CaptEffort=CaptEffort_,
-                     capturesAfterMonit=capturesAfterMonit,
-                     numSeasons=numSeasons, seasonStart=startingQuarter,
-                     maxt=maxt,
-                     hp_lambda=hp_lambda, hp_beta=hp_beta, hp_q=hp_q, hp_tau=hp_tau, 
-                     hp_a2=hp_a2, hp_b2=hp_b2, hp_c1=hp_c1, 
-                     hp_nu=hp_nu, 
-                     hp_xi=hp_xi,
-                     hp_theta=hp_theta, hp_rho=hp_rho,
-                     hp_phi=hp_phi, hp_eta=hp_eta, k=k, K=K,
-                     sd_xi_min=sd_xi_min,
-                     method=method, 
-                     epsilon=epsilon, 
-                     epsilonalphas=epsilonalphas, 
-                     epsilonbq=epsilonbq, 
-                     epsilontau=epsilontau,
-                     epsilonc1=epsilonc1, 
-                     epsilonsens=epsilonsens,
-                     L=L, 
-                     path = path, 
-                     blockSize = blockSize)
+  out_ <- BIID::MCMCiFFBS_(N=N, 
+                           initParamValues = initParamValues, 
+                           Xinit=Xinit, 
+                           TestMat=TestMat_,
+                           CaptHist=CaptHist, 
+                           birthTimes=birthTimes,
+                           startSamplingPeriod=startSamplingPeriod,
+                           endSamplingPeriod=endSamplingPeriod,
+                           nuTimes=nuTimes,
+                           CaptEffort=CaptEffort_,
+                           capturesAfterMonit=capturesAfterMonit,
+                           numSeasons=numSeasons, seasonStart=startingQuarter,
+                           maxt=maxt,
+                           hp_lambda=hp_lambda, hp_beta=hp_beta, hp_q=hp_q, hp_tau=hp_tau, 
+                           hp_a2=hp_a2, hp_b2=hp_b2, hp_c1=hp_c1, 
+                           hp_nu=hp_nu, 
+                           hp_xi=hp_xi,
+                           hp_theta=hp_theta, hp_rho=hp_rho,
+                           hp_phi=hp_phi, hp_eta=hp_eta, k=k, K=K,
+                           sd_xi_min=sd_xi_min,
+                           method=method, 
+                           epsilon=epsilon, 
+                           epsilonalphas=epsilonalphas, 
+                           epsilonbq=epsilonbq, 
+                           epsilontau=epsilontau,
+                           epsilonc1=epsilonc1, 
+                           epsilonsens=epsilonsens,
+                           L=L, 
+                           path = path, 
+                           blockSize = blockSize)
 
   colnames(out_) <- parNames
   
