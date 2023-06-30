@@ -1,5 +1,4 @@
-
-
+## load libraries
 library("BIID") # package in folder BIID/
 library("Rcpp")
 library("coda")
@@ -11,22 +10,23 @@ library("grid") ## for nullGrob()
 library("gridExtra") ## for grid.arrange()
 library("MCMCpack")
 
-
-# setwd(getwd())
-
+## set seed
 seed <- 1
+set.seed(seed)
 
+## set folder name for results to be stored in
 modelFileName <- paste0("finalModel_paper1_seed", seed, "/")
 
-dataDirectory <- "~/Documents/bTB/WPbadgerData/"
+## set path to data
+dataDirectory <- "WPbadgerData/"
 
+## compile soure code
 Rcpp::sourceCpp("LocateIndiv.cpp")
 Rcpp::sourceCpp("indivRcorrection.cpp")
 
-
-########################################################
-# INSTALL PACKAGE "BIID" for model fitting
-########################################################
+#########################################
+#####      Set hyperparameters      #####
+#########################################
 
 method <- 1  # "HMC"
 # method <- 2  # "RWMH"
@@ -47,25 +47,18 @@ xi_sd <- 60
 sd_xi_min <- 8
 k <- 1
 
-
-set.seed(seed)
-
 L <- 30           # only used if method=="HMC"
 
-##############################################################################
-###  Run MCMC-iFFBS code
-
+#########################################
+#####      Run MCMC-iFFBS code      #####
+#########################################
 
 N <- 25000         # number of MCMC iterations
 blockSize <- 1000  # outputs will be saved every 'blockSize' iterations
 
-
-################################################################################
-### Create directory for the outputs (posterior samples and hidden states)
-
+## Create directory for the outputs (posterior samples and hidden states)
 resultsDirectory <- paste0(dataDirectory, modelFileName) # where save Rcpp outputs
 if(!dir.exists(resultsDirectory)){dir.create(resultsDirectory)}
-
 methodName <- ifelse(method==1, "HMC", "MH")
 path <- paste0(resultsDirectory, methodName, "/")
 if(!dir.exists(path)){dir.create(path)}
@@ -77,11 +70,8 @@ for(i in seq(1, N, by=blockSize)){
                   "to", sprintf("%.0f", numTo), "/")
   if(!dir.exists(block)){dir.create(block)}
 }
-################################################################################
 
-
-### Objects created by 'Read_bTBdata_paper1.R'
-
+## load data
 groupNames <- readRDS(paste0(dataDirectory, "groupNames.rds"))
 TestMat <- readRDS(paste0(dataDirectory, "TestMat.rds"))
 CaptHist <- readRDS(paste0(dataDirectory, "CaptHist.rds"))
@@ -93,30 +83,17 @@ capturesAfterMonit <- readRDS(paste0(dataDirectory, "capturesAfterMonit.rds"))
 timeVec <- readRDS(paste0(dataDirectory, "timeVec.rds"))
 dfTimes <- readRDS(paste0(dataDirectory, "dfTimes.rds"))
 
-
-str(groupNames)
-str(TestMat)
-str(CaptHist)
-str(CaptEffort)
-str(birthTimes)
-str(startSamplingPeriod)
-str(endSamplingPeriod)
-str(capturesAfterMonit)
-str(timeVec)
-str(dfTimes)
-
+## extract summaries from data
 G <- length(groupNames)
 m <- length(birthTimes)
 maxt <- ncol(CaptHist)
-
 testNames <- colnames(TestMat[,-c(1:3)])
 numTests <- length(testNames)
 numSeasons <- 4
 
 startingQuarter <- 1L  # because timeVec starts on Q1
 
-###########################################################################
-### Creating Xinit (initial values for the hidden states)
+## Creating Xinit (initial values for the hidden states)
 Xinit <- matrix(0L, m, maxt)
 
 # putting NAs before birth date 
@@ -142,15 +119,12 @@ for (i in 1:m) {
         tStartInfec <- max(birthTimes[i]+1, startSamplingPeriod[i], tt-infecTimesEarlier, 1L)
         Xinit[i, tStartInfec] <- 3L # infection starting at infecTimesEarlier
       }
-      
-      
     }
   }
 }
 
 # tauInit <- rgamma(n = 1, shape = 1, rate = 0.1)
 tauInit <- runif(n = 1, 4, 16)
-
 
 # Assuming E becomes I some quarters later and forcing no E->S and I->E
 for (i in 1:m) {
@@ -161,8 +135,6 @@ for (i in 1:m) {
       Xinit[i, firstInfectedTime:maxt] <- 3L
     }
     
-    # timefromEtoI <- ceiling(1/tau_b)
-    # timefromEtoI <- sample(x = 1:10, size = 1)
     timefromEtoI <- ceiling(rexp(n = 1, rate = 1/tauInit))
     firstInfectiousTime <- firstInfectedTime + timefromEtoI
     if(firstInfectiousTime<maxt){
@@ -193,7 +165,6 @@ for (i in 1:m) {
   }
 }
 
-
 for(i in 1:m){
   if((all(is.na(Xinit[i,])))){
     stop("There are individuals with only NAs")
@@ -205,16 +176,9 @@ for(i in 1:m){
     stop("individuals must have initial values 0,1,3,or 9 during their 
          sampling time period")
   }
-  
 }
 
-
-##############################################################
-##############################################################
-##############################################################
-
-#############   Brock changepoint
-
+## Set Brock changepoint
 colnames(TestMat)[4] <- "Brock1"
 TestMat$Brock2 <- NA # creating a column for Brock2
 TestMat <- TestMat[,c(1:4, 9, 5:8)] # reordering columns
@@ -237,8 +201,6 @@ for(irow in 1:nrow(TestMat)){
   }
 }
 
-
-
 # put NAs in test results outside of the monitoring period
 count <- 0
 for(irow in 1:nrow(TestMat)){
@@ -250,13 +212,10 @@ for(irow in 1:nrow(TestMat)){
     TestMat[irow, c(4:ncol(TestMat))] <- NA
     count <- count + 1
   }
-  
 }
 
 # count # number of capture rows where test results will not be used
 
-
-#####
 # checking which animals 
 # -- were born before monitoring started in their groups
 # -- after 1980
@@ -264,7 +223,6 @@ for(irow in 1:nrow(TestMat)){
 vec <- NULL 
 ids <- NULL
 for(id in 1:m){
-  
   TestMat_i <- filter(TestMat, idNumber==id)
   time <- TestMat_i[1, "time"] # time of first captured
   g <- TestMat_i[1, "group"] 
@@ -275,7 +233,6 @@ for(id in 1:m){
   }
 }
 ids
-
 colnames(vec) <- c("id", "firstGroup", "birthTime", "startSamplingPeriod")
 rownames(vec) <- NULL
 vec <- as.data.frame(vec)
@@ -298,9 +255,6 @@ starts_year <- starts_year[ord]
 gs <- gs[ord]
 nuTimes <- c(1L, as.integer(starts))
 numNuTimes <- length(nuTimes)
-
-
-##############################################################
 
 TestMat_ <- as.matrix(TestMat) # using a matrix to use in Rcpp code
 CaptEffort_<- as.matrix(CaptEffort)
@@ -345,10 +299,11 @@ hp <- list(hp_lambda=hp_lambda, hp_beta=hp_beta, hp_q=hp_q, hp_tau=hp_tau,
            hp_theta=hp_theta, hp_rho=hp_rho, 
            hp_phi=hp_phi, hp_eta=hp_eta)
 
+############################################################################
 
-# # #### Using Rcpp code --------------------------------------
+# Using Rcpp code --------------------------------------
 
-# # Choosing initial parameter values from the prior -----------------------
+# Choosing initial parameter values from the prior -----------------------
 
 # ## This is equivalent to using 
 # initParamValues=Inf
@@ -371,15 +326,11 @@ thetasInit <- runif(numTests, 0.5, 1)
 rhosInit <- runif(numTests, 0.2, 0.8)
 phisInit <- runif(numTests, 0.7, 1)
 etasInit <- rbeta(n=numSeasons, shape1=hp_eta[1], shape2=hp_eta[2])
-
-
 initParamValues <- c(alphaInit, lambdaInit, betaInit, qInit, tauInit, 
                      a2Init, b2Init, c1Init, nuEInit, nuIInit, xiInit,
                      thetasInit, rhosInit, phisInit, etasInit)
-# # 
 
 # initParamValues <- Inf # to generate initial values from the prior
-# # 
 
 ############################################################################
 
@@ -388,7 +339,6 @@ nPars <- length(parNames)
 hpAll <- vector("list", nPars-G)
 parNamesPlot <- vector("list", nPars)
 for(g in 1:G){
-  # parNamesPlot[[g]] <- bquote(alpha~.(str_to_title(groupNames[g])))
   parNamesPlot[[g]] <- str_to_title(groupNames[g])
 }
 parNamesPlot[[G+1]] <- bquote(lambda)
@@ -439,45 +389,38 @@ hp_xi_sd <- hp[["hp_xi"]][2]/4
 hp[["hp_xi"]] <- c(hp_xi_mean, hp_xi_sd)
 hpAll[[xiPos]] <- hp[["hp_xi"]]
 
-
 # initParamValues <- Inf # to generate initial values from the prior
 
-FIT_MODEL <- F
+## fit model
+out_ <- BIID::MCMCiFFBS_(N=N, 
+    initParamValues = initParamValues, 
+    Xinit=Xinit, 
+    TestMat=TestMat_,
+    CaptHist=CaptHist, 
+    birthTimes=birthTimes,
+    startSamplingPeriod=startSamplingPeriod,
+    endSamplingPeriod=endSamplingPeriod,
+    nuTimes=nuTimes,
+    CaptEffort=CaptEffort_,
+    capturesAfterMonit=capturesAfterMonit,
+    numSeasons=numSeasons, seasonStart=startingQuarter,
+    maxt=maxt,
+    hp_lambda=hp_lambda, hp_beta=hp_beta, hp_q=hp_q, hp_tau=hp_tau, 
+    hp_a2=hp_a2, hp_b2=hp_b2, hp_c1=hp_c1, 
+    hp_nu=hp_nu, 
+    hp_xi=hp_xi,
+    hp_theta=hp_theta, hp_rho=hp_rho,
+    hp_phi=hp_phi, hp_eta=hp_eta, k=k, K=K,
+    sd_xi_min=sd_xi_min,
+    method=method, 
+    epsilon=epsilon, 
+    epsilonalphas=epsilonalphas, 
+    epsilonbq=epsilonbq, 
+    epsilontau=epsilontau,
+    epsilonc1=epsilonc1, 
+    epsilonsens=epsilonsens,
+    L=L, 
+    path = path, 
+    blockSize = blockSize)
 
-if(FIT_MODEL){
-  
-  out_ <- BIID::MCMCiFFBS_(N=N, 
-                           initParamValues = initParamValues, 
-                           Xinit=Xinit, 
-                           TestMat=TestMat_,
-                           CaptHist=CaptHist, 
-                           birthTimes=birthTimes,
-                           startSamplingPeriod=startSamplingPeriod,
-                           endSamplingPeriod=endSamplingPeriod,
-                           nuTimes=nuTimes,
-                           CaptEffort=CaptEffort_,
-                           capturesAfterMonit=capturesAfterMonit,
-                           numSeasons=numSeasons, seasonStart=startingQuarter,
-                           maxt=maxt,
-                           hp_lambda=hp_lambda, hp_beta=hp_beta, hp_q=hp_q, hp_tau=hp_tau, 
-                           hp_a2=hp_a2, hp_b2=hp_b2, hp_c1=hp_c1, 
-                           hp_nu=hp_nu, 
-                           hp_xi=hp_xi,
-                           hp_theta=hp_theta, hp_rho=hp_rho,
-                           hp_phi=hp_phi, hp_eta=hp_eta, k=k, K=K,
-                           sd_xi_min=sd_xi_min,
-                           method=method, 
-                           epsilon=epsilon, 
-                           epsilonalphas=epsilonalphas, 
-                           epsilonbq=epsilonbq, 
-                           epsilontau=epsilontau,
-                           epsilonc1=epsilonc1, 
-                           epsilonsens=epsilonsens,
-                           L=L, 
-                           path = path, 
-                           blockSize = blockSize)
-
-  colnames(out_) <- parNames
-  
-  
-}
+colnames(out_) <- parNames
