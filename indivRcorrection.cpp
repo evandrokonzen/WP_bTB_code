@@ -44,9 +44,9 @@ arma::cube CalcIndivRcorretion(arma::mat NAmatrix,
         I = (double)(nInfByGroup(g,t,iter));
         if(nTotByGroup(g,t,iter)>0L){
           pop = (double)(nTotByGroup(g,t,iter));
-          // r_gt = as[g] + b*I/(pow(pop/K, q));
-          r_gt = exp(-b/pow(pop/K, q))*(1-exp(-as[g])) + 
-            I*(1 - exp(-b/pow(pop/K, q)))*exp(-as[g]);
+          r_gt = as[g] + b*I/(pow(pop/K, q));
+          // r_gt = exp(-b/pow(pop/K, q))*(1-exp(-as[g])) + 
+          //   I*(1 - exp(-b/pow(pop/K, q)))*exp(-as[g]);
           totalRates(g,t) = r_gt;
         }
       }
@@ -105,9 +105,8 @@ arma::cube CalcIndivRcorretion(arma::mat NAmatrix,
               }
               
               
-              // contrib_it = b/(pow(pop/K, q));
-              
-              contrib_it = (1 - exp(-b/pow(pop/K, q)))*exp(-as[g]);
+              contrib_it = b/(pow(pop/K, q));
+              // contrib_it = (1 - exp(-b/pow(pop/K, q)))*exp(-as[g]);
               
               R_it = (double)(numEvents) * contrib_it / totalRates(g,t);
               relRatesByIndiv(i,t) = R_it;
