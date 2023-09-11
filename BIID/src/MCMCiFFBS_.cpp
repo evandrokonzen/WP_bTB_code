@@ -433,7 +433,8 @@ arma::mat MCMCiFFBS_(int N,
   
   
   // infection rates, latent period and Gompertz parameters
-  arma::vec pars = arma::zeros<arma::vec>(nParsNotGibbs);
+  int nParsBlock1 = nParsNotGibbs - 2L*numNuTimes - 1L;  // nuEs, nuIs, and xi are updated separately
+  arma::vec pars = arma::zeros<arma::vec>(nParsBlock1);
   
   arma::vec alpha_js = arma::zeros<arma::vec>(G);
   
@@ -492,10 +493,10 @@ arma::mat MCMCiFFBS_(int N,
   // Rcout << "lastCaptureTimes: " << std::endl;
   
   // Covariance matrix of posteriors used in RWMH only
-  arma::mat Sigma = arma::zeros<arma::mat>(nParsNotGibbs, nParsNotGibbs);
+  arma::mat Sigma = arma::zeros<arma::mat>(nParsBlock1, nParsBlock1);
   arma::mat Sigma2 = arma::zeros<arma::mat>(2*numTests, 2*numTests);
-  Sigma = Sigma.eye(nParsNotGibbs,nParsNotGibbs)*0.1;
-  arma::vec can = arma::zeros<arma::vec>(nParsNotGibbs);
+  Sigma = Sigma.eye(nParsBlock1,nParsBlock1)*0.1;
+  arma::vec can = arma::zeros<arma::vec>(nParsBlock1);
   Sigma2 = Sigma2.eye(2*numTests,2*numTests)*0.01;
   
   double sd_xi = 2.0; // starting with a small proposal variance in the first 100 iterations
@@ -942,7 +943,7 @@ arma::mat MCMCiFFBS_(int N,
       
       pars = HMC_2(pars, G, X, totalNumInfec, SocGroup, totalmPerGroup,
                   birthTimes, startSamplingPeriod, lastObsAliveTimes, capturesAfterMonit,
-                  ageMat, epsilon, epsilonalphas, epsilonbq, epsilontau, epsilonc1, nParsNotGibbs, L, 
+                  ageMat, epsilon, epsilonalphas, epsilonbq, epsilontau, epsilonc1, nParsBlock1, L, 
                   hp_lambda, hp_beta, hp_q, hp_tau, hp_a2, hp_b2, hp_c1, k, K);
       
       
@@ -952,10 +953,10 @@ arma::mat MCMCiFFBS_(int N,
         
         int ir0 = floor(iter*0.1);
         // int ir0 = 0L;
-        arma::mat histLogFirstPars = arma::zeros<arma::mat>(iter-ir0, nParsNotGibbs); 
+        arma::mat histLogFirstPars = arma::zeros<arma::mat>(iter-ir0, nParsBlock1); 
 
         for (int ir=0; ir<(iter-ir0); ir++) {
-          for (int ic=0; ic<nParsNotGibbs; ic++) {
+          for (int ic=0; ic<nParsBlock1; ic++) {
             if(ic<G){
               histLogFirstPars(ir,ic) = log( out(ir+ir0,ic)/out(ir+ir0,G) );
             }else if(ic==G+2L){
@@ -1029,11 +1030,11 @@ arma::mat MCMCiFFBS_(int N,
         
         i_nu = min(arma::find(nuTimes == startTime)); // min is used to convert to int type
 
-        if(X(i,startTime)==0L){
+        if(X(i,startTime-1L)==0L){
           numS_atnuTimes[i_nu] += 1L;
-        }else if(X(i,startTime)==3L){
+        }else if(X(i,startTime-1L)==3L){
           numE_atnuTimes[i_nu] += 1L;
-        }else if(X(i,startTime)==1L){
+        }else if(X(i,startTime-1L)==1L){
           numI_atnuTimes[i_nu] += 1L;
         }
         
