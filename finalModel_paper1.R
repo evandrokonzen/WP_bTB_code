@@ -15,7 +15,7 @@ seed <- 1
 set.seed(seed)
 
 ## set folder name for results to be stored in
-modelFileName <- paste0("finalModel_paper1_seed", seed, "/")
+modelFileName <- paste0("finalModel__paper1_seed", seed, "/")
 
 ## set path to data
 dataDirectory <- "WPbadgerData/"
