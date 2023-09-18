@@ -26,7 +26,7 @@ In Ubuntu Linux, execute the command `sudo apt-get install r-base-dev` in a Term
 
 ### Install package
 
-Once the compilers have been installed, then the version in this repository can be installed from source using the `devtools` package in R. That is, install the `devtools` package and then set your wrokign directory in R to correspond to the parent directory that contains the `BIID` folder contained in the repository. Then run:
+Once the compilers have been installed, then the version in this repository can be installed from source using the `devtools` package in R. That is, install the `devtools` package and then set your working directory in R to correspond to the parent directory that contains the `BIID` folder contained in the repository. Then run:
 
 ```
 library(devtools)
