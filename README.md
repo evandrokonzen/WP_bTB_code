@@ -1,5 +1,46 @@
 # Files to fit model in Konzen *et al.* (2023)
 
+## Installation
+
+You will need to install the `BIID` package from source. The package depends on the `Rcpp` and `RcppArmadillo` packages, which require the installation of the correct C++ compilers. The guidance below is taken from Sections 2.1.1, 2.1.2 or 2.1.3 [here](https://teuder.github.io/rcpp4everyone_en/020_install.html).
+
+### Windows
+
+Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/index.html).
+
+(Make sure you tick the option to add Rtools to the PATH whilst installing.)
+
+### Mac
+
+Install Xcode command line tools. Execute the command `xcode-select --install` in a Terminal.
+
+You might also need to install the gfortran libraries from:
+
+[https://cran.r-project.org/bin/macosx/tools/gfortran-6.1.pkg](https://cran.r-project.org/bin/macosx/tools/gfortran-6.1.pkg)
+
+### Linux
+
+Install gcc and related packages (you might also need `gcc-fortran` for some of the dependencies).
+
+In Ubuntu Linux, execute the command `sudo apt-get install r-base-dev` in a Terminal.
+
+### Install package
+
+Once the compilers have been installed, then the version in this repository can be installed from source using the `devtools` package in R. That is, install the `devtools` package and then set your wrokign directory in R to correspond to the parent directory that contains the `BIID` folder contained in the repository. Then run:
+
+```
+library(devtools)
+install("BIID")
+```
+
+Once installed, the package can be loaded as usual using e.g.
+
+```
+library(BIID)
+```
+
+## Model and data
+
 Notation:
 
 * $G$: number of social groups.
