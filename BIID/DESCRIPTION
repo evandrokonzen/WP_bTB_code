@@ -9,7 +9,7 @@ Maintainer: Evandro Konzen <e.konzen@exeter.ac.uk>
 Description: Performs Efficient Bayesian Inference Methods for Infectious 
     Disease Models.
 License: GPL (>= 3)
-Depends: R (>= 3.6)
+Depends: R (>= 3.6), MCMCpack
 Imports: Rcpp (>= 1.0.6)
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
