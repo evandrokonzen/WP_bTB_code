@@ -2,13 +2,15 @@
 
 ## Installation
 
-You will need to install the `BIID` package from source. The package depends on the `Rcpp` and `RcppArmadillo` packages, which require the installation of the correct C++ compilers. The guidance below is taken from Sections 2.1.1, 2.1.2 or 2.1.3 [here](https://teuder.github.io/rcpp4everyone_en/020_install.html).
+You will need to install the `BIID` package from source. The package depends on the `Rcpp` and `RcppArmadillo` packages, 
+which require the installation of the correct C++ compilers. The guidance below is taken from Sections 2.1.1, 2.1.2 or 
+2.1.3 [here](https://teuder.github.io/rcpp4everyone_en/020_install.html).
 
 ### Windows
 
 Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/index.html).
 
-(Make sure you tick the option to add Rtools to the PATH whilst installing.)
+(Make sure you tick the option to add Rtools to the PATH whilst installing if requested.)
 
 ### Mac
 
@@ -26,7 +28,10 @@ In Ubuntu Linux, execute the command `sudo apt-get install r-base-dev` in a Term
 
 ### Install package
 
-Once the compilers have been installed, then the version in this repository can be installed from source using the `devtools` package in R. That is, install the `devtools` package and then set your working directory in R to correspond to the parent directory that contains the `BIID` folder contained in the repository. Then run:
+Once the compilers have been installed, then the version in this repository can be installed from source 
+using the `devtools` package in R. That is, install and/or load the `devtools` package and then set your working 
+directory in R to correspond to the parent directory that contains the `BIID` folder contained in the
+repository. Then run:
 
 ```
 library(devtools)
@@ -37,6 +42,14 @@ Once installed, the package can be loaded as usual using e.g.
 
 ```
 library(BIID)
+```
+
+### Other packages
+
+Other packages required can be installed from within R using:
+
+```
+install.packages(c("coda", "tidyverse", "reshape2", "useful", "MCMCpack"))
 ```
 
 ## Model and data
@@ -82,26 +95,21 @@ Processed data required to reproduce results:
 
 ## Fitting the model
 
-File `finalModel_paper1.R` is used for reading processed data and for choosing priors, initial conditions and details about HMC/RWMH parameter updates.
-
-To fit the model, R package `BIID` (see folder `BIID`) has to be installed. To install this from source
-you can use the `devtools` library. (Note that you will need `Rtools` installed on Windows, or the compiler tools on other systems.) For example, if the working directory contains the `BIID` package folder, then running the following should install the package from source.
-
-```
-library(devtools)
-install("BIID")
-```
+File `runmodel.R` is used for reading processed data and for choosing priors, initial conditions and details about HMC/RWMH parameter updates.
 
 ## Outputs of the fitted model
 
-Outputs (posterior samples for parameters and hidden states) are saved in the directory `resultsDirectory` which is chosen by the user in `finalModel_paper1.R`.
+Outputs (posterior samples for parameters and hidden states) are saved in the directory `resultsDirectory` which is chosen by the user in `runmodel.R`.
 
 Output files are `[X].Rds`, where `X` is:
 
 * `postPars`: ($N \times p$) matrix with the posterior samples for all model parameters.
 * `logLik` and `logPost`: ($N \times 1$) vectors with the log-likelihood and log-posterior, respectively, for all iterations.
-* `infTimes`, `infectivityTimes`, `deathTimes`: ($m \times N$) matrices with the infection times, times of infectiousness, and death times, respectively, for each iteration. The value `-10L` denotes the absence of the event.
 * `nSus`, `nExp` and `nInf`: ($T \times N$) matrices showing the total number of individuals in each compartment ($S$, $E$, and $I$, respectively) in the whole population, at each time point, for each iteration.
+
+Other outputs are split into blocks of iterations, with each block stored in a different folder e.g. `Iters_from1to1000`. In the bullet points below $N$ refers to the number of iterations in each block, and then within each folder there are:
+
+* `infTimes`, `infectivityTimes`, `deathTimes`: ($m \times N$) matrices with the infection times, times of infectiousness, and death times, respectively, for each iteration. The value `-10L` denotes the absence of the event.
 * `nSusTested`, `nExpTested` and `nInfTested`: ($T \times N \times J$) arrays showing the total number of individuals in each compartment which were tested by each diagnostic test.
 * `nSusByGroup`, `nExpByGroup`, `nInfByGroup`:  ($G \times T \times N$) arrays showing the number of individuals in each compartment ($S$, $E$, and $I$, respectively) in each social group, at each time point, for each iteration.
 * `nSusTestedByGroup`, `nExpTestedByGroup` and `nInfTestedByGroup`: lists of $G$ elements (one for each social group), where each element is a ($T \times N \times J$) array showing the number of individuals, in each compartment, which were tested by each diagnostic test.
