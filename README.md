@@ -12,6 +12,8 @@ Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/index.html).
 
 (Make sure you tick the option to add Rtools to the PATH whilst installing if requested.)
 
+(Tested on R 4.3.1 on Windows 10.)
+
 ### Mac
 
 Install Xcode command line tools. Execute the command `xcode-select --install` in a Terminal.
@@ -20,18 +22,19 @@ You might also need to install the gfortran libraries from:
 
 [https://cran.r-project.org/bin/macosx/tools/gfortran-6.1.pkg](https://cran.r-project.org/bin/macosx/tools/gfortran-6.1.pkg)
 
+(Not tested.)
+
 ### Linux
 
 Install gcc and related packages (you might also need `gcc-fortran` for some of the dependencies).
 
 In Ubuntu Linux, execute the command `sudo apt-get install r-base-dev` in a Terminal.
 
+(Tested on R 4.3.1 on Ubuntu 22.04.)
+
 ### Install package
 
-Once the compilers have been installed, then the version in this repository can be installed from source 
-using the `devtools` package in R. That is, install and/or load the `devtools` package and then set your working 
-directory in R to correspond to the parent directory that contains the `BIID` folder contained in the
-repository. Then run:
+Once the compilers have been installed, then the version in this repository can be installed from source using the `devtools` package in R. That is, install and/or load the `devtools` package and then set your working directory in R to correspond to the parent directory that contains the `BIID` folder contained in the repository. Then run:
 
 ```
 library(devtools)
@@ -44,12 +47,12 @@ Once installed, the package can be loaded as usual using e.g.
 library(BIID)
 ```
 
-### Other packages
+### Additional packages
 
-Other packages required can be installed from within R using:
+Additional packages required can be installed from within R using:
 
 ```
-install.packages(c("coda", "tidyverse", "reshape2", "useful", "MCMCpack"))
+install.packages(c("tidyverse", "reshape2", "MCMCpack"))
 ```
 
 ## Model and data
@@ -117,3 +120,44 @@ Other outputs are split into blocks of iterations, with each block stored in a d
 * `AcontribGroup`: ($G \times N$) matrix with the relative contribution of the background transmission rates for each iteration in each social group.
 * `AcontribPopTime`: ($T \times N$) matrix with the relative contribution of the background transmission rates for each iteration at each time point in the whole population.
 * `AcontribGroupTime`: ($G \times T \times N$) matrix with the relative contribution of the background transmission rates for each iteration at each time point in each social group.
+
+## Figures
+
+The folder `Figures` contains example figures that can be generated from the model outputs. Details about these figures will be written up for publication in due course.
+
+* `HiddenStates1.pdf`: Plots of hidden states for groups 1--17
+* `HiddenStates2.pdf`: Plots of hidden states for groups 18--34
+* `HiddenStatesAll.pdf`: Plots of hidden states aggregated across all social groups
+* `modelfit_testNegat_Brock_g18to34.png`: Posterior predictive summaries of Brock test negative animals for groups 18--34
+* `modelfit_testNegat_Brock_g1to17.png`: Posterior predictive summaries of Brock test negative animals for groups 1--17
+* `modelfit_testNegat_Culture_g18to34.png`: Posterior predictive summaries of culture test negative animals for groups 18--34
+* `modelfit_testNegat_Culture_g1to17.png`: Posterior predictive summaries of culture test negative animals for groups 1–17
+* `modelfit_testNegat_DPP_g18to34.png`: Posterior predictive summaries of DPP test negative animals for groups 18--34
+* `modelfit_testNegat_DPP_g1to17.png`: Posterior predictive summaries of DPP test negative animals for groups 1–17
+* `modelfit_testNegat_Gamma_g18to34.png`: Posterior predictive summaries of gamma test negative animals for groups 18--34
+* `modelfit_testNegat_Gamma_g1to17.png`: Posterior predictive summaries of gamma test negative animals for groups 1–17
+* `modelfit_testNegativeAll.png`: Posterior predictive summaries of negative animals for all tests aggregated across social groups
+* `modelfit_testNegat_StatPak_g18to34.png`: Posterior predictive summaries of StatPak test negative animals for groups 18--34
+* `modelfit_testNegat_StatPak_g1to17.png`: Posterior predictive summaries of StatPak test negative animals for groups 1–17
+* `modelfit_testPosit_Brock_g18to34.png`: Posterior predictive summaries of Brock test positive animals for groups 18–34
+* `modelfit_testPosit_Brock_g1to17.png`: Posterior predictive summaries of Brock test positive animals for groups 1–17
+* `modelfit_testPosit_Culture_g18to34.png`: Posterior predictive summaries of culture test positive animals for groups 18–34
+* `modelfit_testPosit_Culture_g1to17.png`: Posterior predictive summaries of culture test positive animals for groups 1–17
+* `modelfit_testPosit_DPP_g18to34.png`: Posterior predictive summaries of DPP test positive animals for groups 18--34
+* `modelfit_testPosit_DPP_g1to17.png`: Posterior predictive summaries of DPP test positive animals for groups 1–17
+* `modelfit_testPosit_Gamma_g18to34.png`: Posterior predictive summaries of gamma test positive animals for groups 18--34
+* `modelfit_testPosit_Gamma_g1to17.png`: Posterior predictive summaries of gamma test positive animals for groups 1–17
+* `modelfit_testPositiveAll.png`: Posterior predictive summaries of positive animals for all tests aggregated across social groups
+* `modelfit_testPosit_StatPak_g18to34.png`: Posterior predictive summaries of StatPak test positive animals for groups 18--34
+* `modelfit_testPosit_StatPak_g1to17.png`: Posterior predictive summaries of StatPak test positive animals for groups 1–17
+* `PosteriorEffInfPeriod.pdf`: Posterior distribution for effective infectious period
+* `PosteriorForIndividual.pdf`: Posterior distribution of conditional event times against data for an example badger
+* `PosteriorIndEffInfPeriod.pdf`: Posterior summaries for effective infectious period across individuals
+* `PosteriorInfPeriod.pdf`: Posterior distribution for infectious period given infectiousness
+* `PosteriorPopR.pdf`: Posterior distribution for population effective reproduction number
+* `PosteriorRi.pdf`: Posterior distribution for individual effective reproduction numbers
+* `PosteriorsForBackgroundRates.pdf`: Posterior distributions for background infection rates by social group
+* `PosteriorsForPars.pdf`: Posterior distributions for parameters
+* `PosteriorSurvival.pdf`: Posterior predictive survival distributions
+* `TraceplotsBackgroundRates.pdf`: Traceplots for background rates of infection
+* `TraceplotsPars.pdf`: Traceplots for parameters

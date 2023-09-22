@@ -44,8 +44,8 @@ L <- 30           # only used if method=="HMC"
 #####      Run MCMC-iFFBS code      #####
 #########################################
 
-N <- 100         # number of MCMC iterations
-blockSize <- 10  # outputs will be saved every 'blockSize' iterations
+N <- 25000         # number of MCMC iterations
+blockSize <- 1000  # outputs will be saved every 'blockSize' iterations
 
 ## Create directory for the outputs (posterior samples and hidden states)
 resultsDirectory <- paste0(dataDirectory, modelFileName) # where save Rcpp outputs
