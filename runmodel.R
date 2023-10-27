@@ -1,12 +1,10 @@
 ## load libraries
 library(BIID) # package in folder BIID/
-library(Rcpp)
 library(tidyverse)
 library(reshape2)
-library(MCMCpack)
 
 ## set seed
-seed <- 1
+seed <- 2
 set.seed(seed)
 
 ## set folder name for results to be stored in
