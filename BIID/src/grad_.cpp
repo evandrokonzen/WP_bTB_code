@@ -79,8 +79,7 @@ arma::vec grad_(arma::vec& logPars, int G,
       int z_t_1 = X(i,j-1);
       int z_t = X(i,j);
       
-      // if( ((z_t_1==0L) | (z_t_1==1L)) & (z_t==9L) ){ // gives the same
-      if(z_t==9L){
+      if( ((z_t_1==0L) || (z_t_1==1L) || (z_t_1==3L)) && (z_t==9L) ){
         double age_ij = (double)(ageMat(i,j));
         double ptiOverqti = TrProbSurvive_(age_ij, a2, b2, c1, false) / 
           TrProbDeath_(age_ij, a2, b2, c1, false);
@@ -92,6 +91,7 @@ arma::vec grad_(arma::vec& logPars, int G,
         double inf_mgt = totalNumInfec(g-1, j-1)/(pow(mdenom, q));
         a = alpha_js[g-1];
         likeas[g-1] -= a;
+        likelam -= a;
         likeb -= b*inf_mgt;
         likeq += b*inf_mgt*log(mdenom)*exp(ql)/(pow((1.0+exp(ql)), 2));
         double age_ij = (double)(ageMat(i,j));
@@ -110,6 +110,7 @@ arma::vec grad_(arma::vec& logPars, int G,
         double toBeExp = a+b*inf_mgt;
         if(toBeExp<1e-15){
           likeas[g-1] += 1.0;
+          likelam += 1.0;
           if(totalNumInfec(g-1, j-1)==0L){
             likeb += 0.0;
           }else{
@@ -119,6 +120,7 @@ arma::vec grad_(arma::vec& logPars, int G,
           // double ratio = exp(-a-b*inf_mgt)/(1-exp(-a-b*inf_mgt));
           double ratio = exp( -a-b*inf_mgt - Rf_log1mexp(a+b*inf_mgt) );
           likeas[g-1] += a*ratio;
+          likelam += a*ratio;
           likeb += b*ratio*inf_mgt;
           likeq -= b*ratio*inf_mgt*log(mdenom)*exp(ql)/(pow((1.0+exp(ql)), 2));
         }

@@ -72,8 +72,7 @@ double logPost_(arma::vec& logPars, int G,
       int z_t_1 = X(i,j-1);
       int z_t = X(i,j);
       
-      // if( ((z_t_1==0L) || (z_t_1==1L)) && (z_t==9L) ){
-      if( z_t==9L ){
+      if( ((z_t_1==0L) || (z_t_1==1L) || (z_t_1==3L)) && (z_t==9L) ){
         double log_qti = TrProbDeath_(age_ij, a2, b2, c1, true);
         loglik += log_qti;
       }else if((z_t_1==0L) && (z_t==0L)){

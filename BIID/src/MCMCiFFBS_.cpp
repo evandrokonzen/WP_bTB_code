@@ -627,7 +627,9 @@ arma::mat MCMCiFFBS_(int N,
     for(unsigned int ii=1; ii<m; ii++){ // without 1st indiv
       if( (X(ii,tt)==0L) || (X(ii,tt)==1L)  || (X(ii,tt)==3L) ){
         int g_i_tt = SocGroup(ii,tt);
-        mPerGroup(g_i_tt-1L, tt) += 1L;
+        if(g_i_tt!=0L){
+          mPerGroup(g_i_tt-1L, tt) += 1L;
+        }
       }
     }
   }
@@ -659,13 +661,10 @@ arma::mat MCMCiFFBS_(int N,
     for(unsigned int tt=0; tt<maxt-1; tt++){
         std::vector<int> idx;
         for (unsigned int jj=1L; jj<m; jj++) {
-          // if(((jj!=id)&&(jj!=idNext))&&
-          //       (SocGroup(jj, tt)==SocGroup(id, tt)||
-          //       (SocGroup(jj, tt)==SocGroup(idNext, tt)))){
           if(((jj!=id)&&(jj!=idNext))&&
+             (SocGroup(jj, tt)!=0)&&
              (SocGroup(jj, tt)==SocGroup(id, tt)||
-             (SocGroup(jj, tt)==SocGroup(idNext, tt)))&&
-             (tt > birthTimes[jj]-2L)){
+             (SocGroup(jj, tt)==SocGroup(idNext, tt)))){
             idx.push_back(jj);
           }
         }

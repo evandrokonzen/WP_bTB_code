@@ -121,13 +121,13 @@ void iFFBS_(arma::vec& alpha_js,
   // predProb(t0,1) = (1-prDeath)*nu;
   // predProb(t0,2) = prDeath;
   
-  if(maxt_i>1){
+  if(t0 < maxt-1){
     arma::rowvec logTransProbRest_row = logTransProbRest.row(t0);
     transProbRest = normTransProbRest(logTransProbRest_row);
     for(int s=0; s<numStates; s++){
       unnormFiltProb[s] = corrector(t0,s) * predProb(t0,s) * transProbRest[s];
     }
-  }else if(maxt_i==1){
+  }else{
     for(int s=0; s<numStates; s++){
       unnormFiltProb[s] = corrector(t0,s) * predProb(t0,s);
     }
@@ -169,7 +169,7 @@ void iFFBS_(arma::vec& alpha_js,
   }
   
   // t=T
-  if(maxt_i>1){
+  if(maxt_i>=1){
     
     int tt = maxt_i-1;
     
@@ -191,10 +191,18 @@ void iFFBS_(arma::vec& alpha_js,
       prDeath*filtProb(tt-1+t0,2) +
       1*filtProb(tt-1+t0,3);
 
-    
-    for(int s=0; s<numStates; s++){
-      unnormFiltProb[s] = corrector(tt+t0,s) * predProb(tt+t0,s);
+    if(tt+t0 < maxt-1){
+      arma::rowvec logTransProbRest_row = logTransProbRest.row(tt+t0);
+      transProbRest = normTransProbRest(logTransProbRest_row);
+      for(int s=0; s<numStates; s++){
+        unnormFiltProb[s] = corrector(tt+t0,s) * predProb(tt+t0,s) * transProbRest[s];
+      }
+    }else{  // if(tt+t0 == maxt-1){
+      for(int s=0; s<numStates; s++){
+        unnormFiltProb[s] = corrector(tt+t0,s) * predProb(tt+t0,s);
+      }
     }
+
     filtProb.row(tt+t0) = unnormFiltProb / sum(unnormFiltProb);
 
   }
@@ -290,10 +298,9 @@ void iFFBS_(arma::vec& alpha_js,
       
       probs = {probSuscep_t, probE_t, probI_t, probDead_t};
       
-      if((tt==0L)&&(birthTime>0L)){
+      if((tt==0L)&&(birthTime>=startTime)){
         probs = {1.0, 0.0, 0.0, 0.0};
       }
-      
 
       // int oldStatus = X(id-1, tt+t0);
       int newStatus = RcppArmadillo::sample(states, 1, true, probs)[0];
