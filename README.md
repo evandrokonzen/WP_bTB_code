@@ -121,42 +121,6 @@ Other outputs are split into blocks of iterations, with each block stored in a d
 * `AcontribPopTime`: ($T \times N$) matrix with the relative contribution of the background transmission rates for each iteration at each time point in the whole population.
 * `AcontribGroupTime`: ($G \times T \times N$) matrix with the relative contribution of the background transmission rates for each iteration at each time point in each social group.
 
-## Figures
-
-The folder `Figures` contains example figures that can be generated from the model outputs. Details about these figures will be written up for publication in due course.
-
-* `HiddenStates1.pdf`: Plots of hidden states for groups 1--17
-* `HiddenStates2.pdf`: Plots of hidden states for groups 18--34
-* `HiddenStatesAll.pdf`: Plots of hidden states aggregated across all social groups
-* `modelfit_testNegat_Brock_g18to34.png`: Posterior predictive summaries of Brock test negative animals for groups 18--34
-* `modelfit_testNegat_Brock_g1to17.png`: Posterior predictive summaries of Brock test negative animals for groups 1--17
-* `modelfit_testNegat_Culture_g18to34.png`: Posterior predictive summaries of culture test negative animals for groups 18--34
-* `modelfit_testNegat_Culture_g1to17.png`: Posterior predictive summaries of culture test negative animals for groups 1–17
-* `modelfit_testNegat_DPP_g18to34.png`: Posterior predictive summaries of DPP test negative animals for groups 18--34
-* `modelfit_testNegat_DPP_g1to17.png`: Posterior predictive summaries of DPP test negative animals for groups 1–17
-* `modelfit_testNegat_Gamma_g18to34.png`: Posterior predictive summaries of gamma test negative animals for groups 18--34
-* `modelfit_testNegat_Gamma_g1to17.png`: Posterior predictive summaries of gamma test negative animals for groups 1–17
-* `modelfit_testNegativeAll.png`: Posterior predictive summaries of negative animals for all tests aggregated across social groups
-* `modelfit_testNegat_StatPak_g18to34.png`: Posterior predictive summaries of StatPak test negative animals for groups 18--34
-* `modelfit_testNegat_StatPak_g1to17.png`: Posterior predictive summaries of StatPak test negative animals for groups 1–17
-* `modelfit_testPosit_Brock_g18to34.png`: Posterior predictive summaries of Brock test positive animals for groups 18–34
-* `modelfit_testPosit_Brock_g1to17.png`: Posterior predictive summaries of Brock test positive animals for groups 1–17
-* `modelfit_testPosit_Culture_g18to34.png`: Posterior predictive summaries of culture test positive animals for groups 18–34
-* `modelfit_testPosit_Culture_g1to17.png`: Posterior predictive summaries of culture test positive animals for groups 1–17
-* `modelfit_testPosit_DPP_g18to34.png`: Posterior predictive summaries of DPP test positive animals for groups 18--34
-* `modelfit_testPosit_DPP_g1to17.png`: Posterior predictive summaries of DPP test positive animals for groups 1–17
-* `modelfit_testPosit_Gamma_g18to34.png`: Posterior predictive summaries of gamma test positive animals for groups 18--34
-* `modelfit_testPosit_Gamma_g1to17.png`: Posterior predictive summaries of gamma test positive animals for groups 1–17
-* `modelfit_testPositiveAll.png`: Posterior predictive summaries of positive animals for all tests aggregated across social groups
-* `modelfit_testPosit_StatPak_g18to34.png`: Posterior predictive summaries of StatPak test positive animals for groups 18--34
-* `modelfit_testPosit_StatPak_g1to17.png`: Posterior predictive summaries of StatPak test positive animals for groups 1–17
-* `PosteriorEffInfPeriod.pdf`: Posterior distribution for effective infectious period
-* `PosteriorForIndividual.pdf`: Posterior distribution of conditional event times against data for an example badger
-* `PosteriorIndEffInfPeriod.pdf`: Posterior summaries for effective infectious period across individuals
-* `PosteriorInfPeriod.pdf`: Posterior distribution for infectious period given infectiousness
-* `PosteriorPopR.pdf`: Posterior distribution for population effective reproduction number
-* `PosteriorRi.pdf`: Posterior distribution for individual effective reproduction numbers
-* `PosteriorsForBackgroundRates.pdf`: Posterior distributions for background infection rates by social group
 * `PosteriorsForPars.pdf`: Posterior distributions for parameters
 * `PosteriorSurvival.pdf`: Posterior predictive survival distributions
 * `TraceplotsBackgroundRates.pdf`: Traceplots for background rates of infection
