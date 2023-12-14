@@ -120,8 +120,3 @@ Other outputs are split into blocks of iterations, with each block stored in a d
 * `AcontribGroup`: ($G \times N$) matrix with the relative contribution of the background transmission rates for each iteration in each social group.
 * `AcontribPopTime`: ($T \times N$) matrix with the relative contribution of the background transmission rates for each iteration at each time point in the whole population.
 * `AcontribGroupTime`: ($G \times T \times N$) matrix with the relative contribution of the background transmission rates for each iteration at each time point in each social group.
-
-* `PosteriorsForPars.pdf`: Posterior distributions for parameters
-* `PosteriorSurvival.pdf`: Posterior predictive survival distributions
-* `TraceplotsBackgroundRates.pdf`: Traceplots for background rates of infection
-* `TraceplotsPars.pdf`: Traceplots for parameters
